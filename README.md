@@ -18,7 +18,7 @@ Este programa monitora uma pasta especificada e organiza os arquivos presentes n
 
 2. Certifique-se de ter o Python 3.x instalado em seu sistema. Caso contrário, faça o download e a instalação a partir do site oficial do Python.
 
-3. Instale as bibliotecas Python necessárias executando o seguinte comando no terminal:
+3. Instale as bibliotecas Python necessárias executando o seguinte comando no terminal: `pip install watchdog` e `pip install pystray`
 
 ## Uso
 
