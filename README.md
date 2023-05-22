@@ -28,6 +28,17 @@ O programa ficará em execução, monitorando a pasta especificada. Sempre que u
 - O arquivo `main.py` não será movido para nenhuma pasta durante a organização.
 - Se um arquivo não tiver uma extensão, ele será movido para a pasta "sem_extensao".
 
+## SECOMP
+
+- Semana da Computação da UNEMAT 2023
+- Uma semana de interações e conhecimento voltada para acadêmicos e toda a comunidade.
+- Para mais informações sobre o evento SECOMP, visite [https://risc.unemat.br/secomp/](https://risc.unemat.br/secomp/).
+
+## De aluno para aluno ❤️
+
+- Esse é um projeto feito para a SECOMP realizada no ano de 2023, em maio.
+- Foi realizado com a contribuição dos alunos Ikaro David Miguel de Oliveira Silva e Bruno Oliveira Goulart
+
 ## Personalização
 
 - Ícone da bandeja do sistema: Se você deseja personalizar o ícone exibido na bandeja do sistema, substitua o arquivo `icone.png` pelo seu próprio ícone com o mesmo nome e extensão PNG.
