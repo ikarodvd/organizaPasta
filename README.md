@@ -2,6 +2,11 @@
 
 Este programa monitora uma pasta especificada e organiza os arquivos presentes nela em subpastas com base em suas extensões. Os arquivos são movidos para as pastas correspondentes de acordo com sua extensão.
 
+## Contato
+
+- LinkedIn: [https://www.linkedin.com/in/ikaro-david-a9b52a163/](https://www.linkedin.com/in/ikaro-david-a9b52a163/)
+- Instagram: [https://www.instagram.com/i_ka_o/](https://www.instagram.com/i_ka_o/)
+
 ## Requisitos
 
 - Python 3.x
