@@ -48,6 +48,14 @@ O programa ficará em execução, monitorando a pasta especificada. Sempre que u
 
 - Ícone da bandeja do sistema: Se você deseja personalizar o ícone exibido na bandeja do sistema, substitua o arquivo `icone.png` pelo seu próprio ícone com o mesmo nome e extensão PNG.
 
+## Possíveis Melhorias 🚀
+
+- Adicionar uma interface gráfica para facilitar a interação com o programa. 💻🖱️
+- Permitir que um array de pastas seja passado como argumento para monitorar várias pastas ao mesmo tempo. 📁📁
+- Implementar a opção de monitorar uma pasta pai e todos os seus filhos de forma recursiva. 🌳📂
+- Adicionar regras personalizadas para pastas específicas, como mover arquivos de um determinado tipo para uma pasta específica. ✅📄📂
+- Implementar uma regra de renomeação de arquivos em uma pasta específica. 🔄📂
+
 ## Contribuição
 
 Sinta-se à vontade para contribuir para este projeto abrindo problemas (issues) ou enviando solicitações de pull (pull requests).
@@ -57,3 +65,5 @@ Se você encontrar algum problema ou tiver alguma sugestão, por favor, abra um 
 ## Licença
 
 Este projeto é licenciado sob a [Licença MIT](LICENSE).
+
+## "A educação é a chave que abre as portas da oportunidade, transformando sonhos em realidade e iluminando o caminho para um futuro melhor."
