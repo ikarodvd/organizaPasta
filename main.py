@@ -1,91 +1,82 @@
 import os
-import argparse
 import shutil
 from pathlib import Path
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 
-class FileHandler(FileSystemEventHandler):
-    def __init__(self, folder):
-        super(FileHandler, self).__init__()
-        self.folder = folder
+def on_created(event, pasta_destino):
+    if event.is_directory:
+        return
 
-    def on_created(self, event):
-        if event.is_directory:
-            return
+    caminho_arquivo = event.src_path
+    extensao = Path(caminho_arquivo).suffix.lower()
 
-        file_path = event.src_path
-        extension = Path(file_path).suffix.lower()
+    if extensao:
+        pasta_alvo = pasta_destino / extensao[1:]
+    else:
+        pasta_alvo = pasta_destino / "sem_extensao"
 
-        if extension:
-            target_folder = self.folder / extension[1:]
-        else:
-            target_folder = self.folder / "sem_extensao"
+    if not pasta_alvo.exists():
+        pasta_alvo.mkdir()
 
-        if not target_folder.exists():
-            target_folder.mkdir()
-
-        target_file = target_folder / Path(file_path).name
-        shutil.move(file_path, target_file)
+    arquivo_alvo = pasta_alvo / Path(caminho_arquivo).name
+    shutil.move(caminho_arquivo, arquivo_alvo)
 
 
-def create_folders_for_extensions(folder):
-    extensions = set()
+def criar_pastas_para_extensoes(pasta):
+    extensoes = set()
 
-    for file in folder.iterdir():
-        if file.is_file():
-            extension = file.suffix.lower()
-            extensions.add(extension)
+    for arquivo in pasta.iterdir():
+        if arquivo.is_file():
+            extensao = arquivo.suffix.lower()
+            extensoes.add(extensao)
 
-    for extension in extensions:
-        target_folder = folder / extension[1:]
-        if not target_folder.exists():
-            target_folder.mkdir()
+    for extensao in extensoes:
+        pasta_alvo = pasta / extensao[1:]
+        if not pasta_alvo.exists():
+            pasta_alvo.mkdir()
 
-    target_folder = folder / "sem_extensao"
-    if not target_folder.exists():
-        target_folder.mkdir()
+    pasta_sem_extensao = pasta / "sem_extensao"
+    if not pasta_sem_extensao.exists():
+        pasta_sem_extensao.mkdir()
 
 
-def organize_files(folder):
-    create_folders_for_extensions(folder)
+def organizar_arquivos(pasta):
+    criar_pastas_para_extensoes(pasta)
 
-    for file in folder.iterdir():
-        if file.is_file():
-            extension = file.suffix.lower()
-            if extension:
-                target_folder = folder / extension[1:]
+    for arquivo in pasta.iterdir():
+        if arquivo.is_file():
+            extensao = arquivo.suffix.lower()
+            if extensao:
+                pasta_alvo = pasta / extensao[1:]
             else:
-                target_folder = folder / "sem_extensao"
-            target_file = target_folder / file.name
-            shutil.move(str(file), str(target_file))
+                pasta_alvo = pasta / "sem_extensao"
+            arquivo_alvo = pasta_alvo / arquivo.name
+            shutil.move(str(arquivo), str(arquivo_alvo))
 
 
-def watch_folder(folder):
-    event_handler = FileHandler(folder)
-    observer = Observer()
-    observer.schedule(event_handler, folder, recursive=True)
-    observer.start()
+def monitorar_pasta(pasta):
+    class ManipuladorArquivo(FileSystemEventHandler):
+        def on_created(self, event):
+            on_created(event, pasta)
+
+    manipulador_evento = ManipuladorArquivo()
+    observador = Observer()
+    observador.schedule(manipulador_evento, pasta, recursive=True)
+    observador.start()
 
     try:
         while True:
             pass
     except KeyboardInterrupt:
-        observer.stop()
+        observador.stop()
 
-    observer.join()
+    observador.join()
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Monitor and organize files in a folder based on their extensions."
-    )
-    parser.add_argument("folder", type=str, help="Folder to monitor")
+    pasta = Path(input("Digite o caminho da pasta a ser monitorada: "))
 
-    args = parser.parse_args()
-
-    folder = Path(args.folder)
-
-    organize_files(folder)
-    watch_folder(folder)
+    organizar_arquivos(pasta)
+    monitorar_pasta(pasta)
