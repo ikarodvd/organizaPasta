@@ -5,7 +5,7 @@ import tempfile
 import time
 from watchdog.observers import Observer
 
-from main import create_folders_for_extensions, organize_files, FileHandler
+from main import criar_pastas_para_extensoes, organizar_arquivos, ManipuladorArquivo
 
 
 class TestOrganizeFiles(unittest.TestCase):
@@ -20,7 +20,7 @@ class TestOrganizeFiles(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.temp_dir)
 
-    def test_create_folders_for_extensions(self):
+    def test_criar_pastas_para_extensoes(self):
         file1 = self.source_dir / "file1.txt"
         file2 = self.source_dir / "file2.jpg"
         file3 = self.source_dir / "file3.py"
@@ -39,7 +39,7 @@ class TestOrganizeFiles(unittest.TestCase):
         self.assertTrue((self.target_dir / "docx").is_dir())
         self.assertTrue((self.target_dir / "sem_extensao").is_dir())
 
-    def test_organize_files(self):
+    def test_organizar_arquivos(self):
         file1 = self.source_dir / "file1.txt"
         file2 = self.source_dir / "file2.jpg"
         file3 = self.source_dir / "file3.py"
@@ -50,7 +50,7 @@ class TestOrganizeFiles(unittest.TestCase):
         file3.touch()
         file4.touch()
 
-        organize_files(self.source_dir)
+        organizar_arquivos(self.source_dir)
 
         self.assertFalse(file1.exists())
         self.assertFalse(file2.exists())
@@ -70,7 +70,7 @@ class TestOrganizeFiles(unittest.TestCase):
         file1.touch()
         file2.touch()
 
-        event_handler = FileHandler(self.target_dir)
+        event_handler = ManipuladorArquivo(self.target_dir)
         observer = Observer()
         observer.schedule(event_handler, self.source_dir, recursive=True)
         observer.start()

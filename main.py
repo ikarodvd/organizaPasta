@@ -5,26 +5,26 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 
-def on_created(event, pasta_destino):
+def onCreated(event, pastaDestino):
     if event.is_directory:
         return
 
-    caminho_arquivo = event.src_path
-    extensao = Path(caminho_arquivo).suffix.lower()
+    caminhoArquivo = event.src_path
+    extensao = Path(caminhoArquivo).suffix.lower()
 
     if extensao:
-        pasta_alvo = pasta_destino / extensao[1:]
+        pastaAlvo = pastaDestino / extensao[1:]
     else:
-        pasta_alvo = pasta_destino / "sem_extensao"
+        pastaAlvo = pastaDestino / "sem_extensao"
 
-    if not pasta_alvo.exists():
-        pasta_alvo.mkdir()
+    if not pastaAlvo.exists():
+        pastaAlvo.mkdir()
 
-    arquivo_alvo = pasta_alvo / Path(caminho_arquivo).name
-    shutil.move(caminho_arquivo, arquivo_alvo)
+    arquivoAlvo = pastaAlvo / Path(caminhoArquivo).name
+    shutil.move(caminhoArquivo, arquivoAlvo)
 
 
-def criar_pastas_para_extensoes(pasta):
+def criarPastasParaExtensao(pasta):
     extensoes = set()
 
     for arquivo in pasta.iterdir():
@@ -33,37 +33,37 @@ def criar_pastas_para_extensoes(pasta):
             extensoes.add(extensao)
 
     for extensao in extensoes:
-        pasta_alvo = pasta / extensao[1:]
-        if not pasta_alvo.exists():
-            pasta_alvo.mkdir()
+        pastaAlvo = pasta / extensao[1:]
+        if not pastaAlvo.exists():
+            pastaAlvo.mkdir()
 
-    pasta_sem_extensao = pasta / "sem_extensao"
-    if not pasta_sem_extensao.exists():
-        pasta_sem_extensao.mkdir()
+    pastaSemExtensao = pasta / "sem_extensao"
+    if not pastaSemExtensao.exists():
+        pastaSemExtensao.mkdir()
 
 
-def organizar_arquivos(pasta):
-    criar_pastas_para_extensoes(pasta)
+def organizarArquivos(pasta):
+    criarPastasParaExtensao(pasta)
 
     for arquivo in pasta.iterdir():
         if arquivo.is_file():
             extensao = arquivo.suffix.lower()
             if extensao:
-                pasta_alvo = pasta / extensao[1:]
+                pastaAlvo = pasta / extensao[1:]
             else:
-                pasta_alvo = pasta / "sem_extensao"
-            arquivo_alvo = pasta_alvo / arquivo.name
-            shutil.move(str(arquivo), str(arquivo_alvo))
+                pastaAlvo = pasta / "sem_extensao"
+            arquivoAlvo = pastaAlvo / arquivo.name
+            shutil.move(str(arquivo), str(arquivoAlvo))
 
 
-def monitorar_pasta(pasta):
+def monitorarPasta(pasta):
     class ManipuladorArquivo(FileSystemEventHandler):
-        def on_created(self, event):
-            on_created(event, pasta)
+        def onCreated(self, event):
+            onCreated(event, pasta)
 
-    manipulador_evento = ManipuladorArquivo()
+    manipuladorEvento = ManipuladorArquivo()
     observador = Observer()
-    observador.schedule(manipulador_evento, pasta, recursive=True)
+    observador.schedule(manipuladorEvento, pasta, recursive=True)
     observador.start()
 
     try:
@@ -78,5 +78,5 @@ def monitorar_pasta(pasta):
 if __name__ == "__main__":
     pasta = Path(input("Digite o caminho da pasta a ser monitorada: "))
 
-    organizar_arquivos(pasta)
-    monitorar_pasta(pasta)
+    organizarArquivos(pasta)
+    monitorarPasta(pasta)
