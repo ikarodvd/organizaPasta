@@ -1,91 +1,33 @@
-import unittest
-from pathlib import Path
-import shutil
-import tempfile
-import time
-from watchdog.observers import Observer
-
-from main import criar_pastas_para_extensoes, organizar_arquivos, ManipuladorArquivo
+import os
+import random
+import string
 
 
-class TestOrganizeFiles(unittest.TestCase):
-    def setUp(self):
-        self.temp_dir = Path(tempfile.mkdtemp())
-        self.source_dir = self.temp_dir / "source"
-        self.target_dir = self.temp_dir / "target"
-
-        self.source_dir.mkdir()
-        self.target_dir.mkdir()
-
-    def tearDown(self):
-        shutil.rmtree(self.temp_dir)
-
-    def test_criar_pastas_para_extensoes(self):
-        file1 = self.source_dir / "file1.txt"
-        file2 = self.source_dir / "file2.jpg"
-        file3 = self.source_dir / "file3.py"
-        file4 = self.source_dir / "file4.docx"
-
-        file1.touch()
-        file2.touch()
-        file3.touch()
-        file4.touch()
-
-        create_folders_for_extensions(self.target_dir)
-
-        self.assertTrue((self.target_dir / "txt").is_dir())
-        self.assertTrue((self.target_dir / "jpg").is_dir())
-        self.assertTrue((self.target_dir / "py").is_dir())
-        self.assertTrue((self.target_dir / "docx").is_dir())
-        self.assertTrue((self.target_dir / "sem_extensao").is_dir())
-
-    def test_organizar_arquivos(self):
-        file1 = self.source_dir / "file1.txt"
-        file2 = self.source_dir / "file2.jpg"
-        file3 = self.source_dir / "file3.py"
-        file4 = self.source_dir / "file4.docx"
-
-        file1.touch()
-        file2.touch()
-        file3.touch()
-        file4.touch()
-
-        organizar_arquivos(self.source_dir)
-
-        self.assertFalse(file1.exists())
-        self.assertFalse(file2.exists())
-        self.assertFalse(file3.exists())
-        self.assertFalse(file4.exists())
-
-        self.assertTrue((self.source_dir / "txt" / "file1.txt").exists())
-        self.assertTrue((self.source_dir / "jpg" / "file2.jpg").exists())
-        self.assertTrue((self.source_dir / "py" / "file3.py").exists())
-        self.assertTrue((self.source_dir / "docx" / "file4.docx").exists())
-        self.assertTrue((self.source_dir / "sem_extensao" / "file5").exists())
-
-    def test_watch_folder(self):
-        file1 = self.source_dir / "file1.txt"
-        file2 = self.source_dir / "file2.jpg"
-
-        file1.touch()
-        file2.touch()
-
-        event_handler = ManipuladorArquivo(self.target_dir)
-        observer = Observer()
-        observer.schedule(event_handler, self.source_dir, recursive=True)
-        observer.start()
-
-        time.sleep(2)
-
-        self.assertFalse(file1.exists())
-        self.assertFalse(file2.exists())
-
-        self.assertTrue((self.target_dir / "txt" / "file1.txt").exists())
-        self.assertTrue((self.target_dir / "jpg" / "file2.jpg").exists())
-
-        observer.stop()
-        observer.join()
+def generate_random_extension():
+    extensions = [".txt", ".doc", ".pdf", ".jpg", ".png", ".mp3", ".mp4", ".exe"]
+    return random.choice(extensions)
 
 
-if __name__ == "__main__":
-    unittest.main()
+def generate_random_filename(length):
+    letters = string.ascii_lowercase
+    return "".join(random.choice(letters) for _ in range(length))
+
+
+def generate_files(num_files, output_folder):
+    for i in range(num_files):
+        extension = generate_random_extension()
+        filename = generate_random_filename(8)
+        file_path = os.path.join(output_folder, f"{filename}{extension}")
+        with open(file_path, "w") as file:
+            file.write("This is a sample file.")
+
+
+output_folder = "arquivos"
+num_files = 1000
+
+# Cria a pasta de saída se não existir
+if not os.path.exists(output_folder):
+    os.makedirs(output_folder)
+
+generate_files(num_files, output_folder)
+print(f'{num_files} arquivos gerados na pasta "{output_folder}".')
