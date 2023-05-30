@@ -97,13 +97,13 @@ def watch_folders(folders):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Monitor and organize files in folders based on their extensions."
+        description="Monitora e organiza arquivos em uma pasta baseando-se em suas extensões."
     )
     parser.add_argument(
         "--folders",
         nargs="*",
         default=[Path(os.getcwd())],
-        help="Folders to monitor",
+        help="Pastas para monitorar",
     )
 
     args = parser.parse_args()
