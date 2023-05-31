@@ -43,7 +43,7 @@ class FileHandler(FileSystemEventHandler):
         return self.folders[0] / extension
 
 
-def create_folders_for_extensions(folders):
+def create_folders_for_extensions(folders):  # 2 funcao a ser criada
     extensions = set()
 
     for folder in folders:
@@ -64,8 +64,8 @@ def create_folders_for_extensions(folders):
             target_folder.mkdir()
 
 
-def organize_files(folders):
-    create_folders_for_extensions(folders)
+def organize_files(folders):  # 1 funcao
+    create_folders_for_extensions(folders)  # criar depois de terminar essa inteira
 
     for folder in folders:
         for file in folder.iterdir():
