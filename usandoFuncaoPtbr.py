@@ -6,7 +6,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 
-def ao_criar(evento, pastas):
+def ao_criar(evento, pastas):  # 4 a ser criada
     if evento.is_directory:
         return
 
@@ -14,7 +14,7 @@ def ao_criar(evento, pastas):
     extensao = Path(caminho_arquivo).suffix.lower()
 
     if extensao:
-        pasta_destino = encontrar_pasta_destino(extensao[1:], pastas)
+        pasta_destino = encontrar_pasta_destino(extensao[1:], pastas)  # criar na hora
     else:
         pasta_destino = encontrar_pasta_destino("sem_extensao", pastas)
 
@@ -31,7 +31,7 @@ def ao_criar(evento, pastas):
         print(f"Detalhes do erro: {str(e)}")
 
 
-def encontrar_pasta_destino(extensao, pastas):
+def encontrar_pasta_destino(extensao, pastas):  # 5 a ser criada
     for pasta in pastas:
         pasta_destino = pasta / extensao
         if pasta_destino.exists():
