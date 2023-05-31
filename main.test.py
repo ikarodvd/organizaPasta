@@ -23,7 +23,7 @@ def generate_files(num_files, output_folder):
 
 
 output_folder = "arquivos"
-num_files = 1000
+num_files = 100
 
 # Cria a pasta de saída se não existir
 if not os.path.exists(output_folder):

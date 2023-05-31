@@ -6,7 +6,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 
-def ao_criar(evento, pastas):
+def ao_criar(evento, pastas):  # 4 a ser criada
     if evento.is_directory:
         return
 
@@ -14,7 +14,7 @@ def ao_criar(evento, pastas):
     extensao = Path(caminho_arquivo).suffix.lower()
 
     if extensao:
-        pasta_destino = encontrar_pasta_destino(extensao[1:], pastas)
+        pasta_destino = encontrar_pasta_destino(extensao[1:], pastas)  # criar na hora
     else:
         pasta_destino = encontrar_pasta_destino("sem_extensao", pastas)
 
@@ -31,7 +31,7 @@ def ao_criar(evento, pastas):
         print(f"Detalhes do erro: {str(e)}")
 
 
-def encontrar_pasta_destino(extensao, pastas):
+def encontrar_pasta_destino(extensao, pastas):  # 5 a ser criada
     for pasta in pastas:
         pasta_destino = pasta / extensao
         if pasta_destino.exists():
@@ -39,7 +39,7 @@ def encontrar_pasta_destino(extensao, pastas):
     return pastas[0] / extensao
 
 
-def criar_pastas_para_extensoes(pastas):
+def criar_pastas_para_extensoes(pastas):  # 2 função a ser criada
     extensoes = set()
 
     for pasta in pastas:
@@ -60,8 +60,10 @@ def criar_pastas_para_extensoes(pastas):
             pasta_destino.mkdir()
 
 
-def organizar_arquivos(pastas):
-    criar_pastas_para_extensoes(pastas)
+def organizar_arquivos(pastas):  # 1 função criada
+    criar_pastas_para_extensoes(
+        pastas
+    )  # depois que eu fizer toda a função da camada superior
 
     for pasta in pastas:
         for arquivo in pasta.iterdir():
@@ -75,9 +77,11 @@ def organizar_arquivos(pastas):
                 shutil.move(str(arquivo), str(arquivo_destino))
 
 
-def monitorar_pastas(pastas):
+def monitorar_pastas(pastas):  # 3 função a ser criada
     manipulador_eventos = FileSystemEventHandler()
-    manipulador_eventos.on_created = lambda evento: ao_criar(evento, pastas)
+    manipulador_eventos.on_created = lambda evento: ao_criar(
+        evento, pastas
+    )  # Criar depois do final dessa função
 
     observador = Observer()
     for pasta in pastas:
@@ -93,7 +97,7 @@ def monitorar_pastas(pastas):
     observador.join()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # construindo
     parser = argparse.ArgumentParser(
         description="Monitora e organiza arquivos em uma pasta baseando-se em suas extensões."
     )
