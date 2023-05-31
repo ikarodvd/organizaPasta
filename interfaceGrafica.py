@@ -6,7 +6,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import tkinter as tk
 from tkinter import filedialog
-
+#
 
 def ao_criar(evento, pastas):
     if evento.is_directory:
